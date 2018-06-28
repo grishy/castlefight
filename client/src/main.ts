@@ -1,19 +1,8 @@
-class Student {
-    fullName: string;
-    constructor(public firstName: string, public middleInitial: string, public lastName: string) {
-        this.fullName = firstName + " " + middleInitial + " " + lastName;
-    }
+import { sayHello } from "./greet";
+
+function showHello(divName: string, name: string) {
+    const elt = document.getElementById(divName);
+    elt.innerText = sayHello(name);
 }
 
-interface Person {
-    firstName: string;
-    lastName: string;
-}
-
-function greeter(person: Person) {
-    return "Hello, " + person.firstName + " " + person.lastName;
-}
-
-let user = new Student("Jane", "M.", "User");
-
-document.body.innerHTML = greeter(user);
+showHello("greeting", "TypeScript");
