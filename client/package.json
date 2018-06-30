@@ -9,10 +9,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "docdash": "^0.4.0",
     "gulp": "^3.9.1",
     "gulp-better-rollup": "^3.3.0",
     "gulp-clean": "^0.4.0",
     "gulp-connect": "^5.5.0",
+    "gulp-jsdoc3": "^2.0.0",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-watch": "^5.0.0"
   }
