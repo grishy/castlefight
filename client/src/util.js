@@ -1,11 +1,10 @@
 /**
+ * Calling a function is not more frequent wait number. 
  *
- *
- * @export
- * @param {*} func 
- * @param {*} wait
- * @param {*} immediate
- * 
+ * @param {function} func
+ * @param {millisecond} wait - Minimum time between calls.
+ * @param {boolean} immediate
+ * @return {function}
  */
 export function debounce(func, wait, immediate) {
     let timeout;
