@@ -2,19 +2,18 @@
   "name": "client",
   "version": "1.0.0",
   "description": "",
-  "main": "./src/main.ts",
+  "main": "./src/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "browserify": "^16.2.2",
     "gulp": "^3.9.1",
+    "gulp-better-rollup": "^3.3.0",
+    "gulp-clean": "^0.4.0",
     "gulp-connect": "^5.5.0",
-    "gulp-typescript": "^5.0.0-alpha.2",
-    "tsify": "^4.0.0",
-    "typescript": "^2.9.2",
-    "vinyl-source-stream": "^2.0.0"
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-watch": "^5.0.0"
   }
 }
