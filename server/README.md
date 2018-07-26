@@ -1,8 +1,7 @@
 ### Use
 
-1. Install Clang v6.0
-2. Add to PATH Clang
+1. Install Golang
 
-`
-clang++ main.cpp -o main.exe -std=c++17
-`
+```
+go run main.go
+```
