@@ -1,29 +1,37 @@
+import { Scene } from "./types/scene";
+import { Main } from "./scene/main";
 
-import Game from './game';
+import { debounce } from "./utils";
 
 class App {
-	private _game: Game;
+    private scene: Scene;
+    private canvas: HTMLCanvasElement;
+    private ctx: CanvasRenderingContext2D;
 
-	constructor(game: Game) {
-		this._game = game;
-	}
+    constructor() {
+        this.canvas = <HTMLCanvasElement>document.getElementById("game");
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
+        this.ctx = this.canvas.getContext("2d");
+    }
 
-	public setup(): void {
-		// Any setup that is required that only runs once before game loads goes here
+    public setup(): void {
+        this.scene = new Main(this.ctx);
 
-		this.gameLoop();
-	}
+        window.onresize = debounce(this.scene.resize.bind(this), 100);
 
-	private gameLoop(): void {
-        // need to bind the current this reference to the callback
-		requestAnimationFrame(this.gameLoop.bind(this)); 
+        requestAnimationFrame(this.gameLoop.bind(this));
+    }
 
-		this._game.render();
-	}
+    private gameLoop(delta: number): void {
+        this.scene.draw(delta);
+
+        requestAnimationFrame(this.gameLoop.bind(this));
+    }
 }
 
-window.onload = () => {
-	let app = new App(new Game());
+window.onload = function() {
+    let app = new App();
 
-	app.setup();
-}
+    app.setup();
+};

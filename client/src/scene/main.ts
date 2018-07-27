@@ -1,18 +1,11 @@
-export default class Game {
-    private canvas: HTMLCanvasElement;
-    private ctx: CanvasRenderingContext2D;
-    private height: number = window.innerHeight;
-    private width: number = window.innerWidth;
+import { Scene } from "../types/scene";
 
-    constructor() {
-        this.canvas = <HTMLCanvasElement>document.getElementById("game");
-        this.canvas.width = this.width;
-        this.canvas.height = this.height;
-        this.ctx = this.canvas.getContext("2d");
-    }
-
-    public render(): void {
-        var time = +new Date() * 0.001;
+export class Main extends Scene {
+    /**
+     * draw
+     */
+    public draw(delta: number) {
+        delta *= 0.001;
 
         this.ctx.fillStyle = "#DDE";
         this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
@@ -22,8 +15,8 @@ export default class Game {
         const size = 48;
         const across = this.ctx.canvas.width / spacing + 1;
         const down = this.ctx.canvas.height / spacing + 1;
-        const s = Math.sin(time);
-        const c = Math.cos(time);
+        const s = Math.sin(delta);
+        const c = Math.cos(delta);
         for (let y = 0; y < down; ++y) {
             for (let x = 0; x < across; ++x) {
                 this.ctx.setTransform(c, -s, s, c, x * spacing, y * spacing);
@@ -32,5 +25,12 @@ export default class Game {
         }
 
         this.ctx.restore();
+    }
+
+    /**
+     * resize
+     */
+    public resize() {
+        super.resize();
     }
 }

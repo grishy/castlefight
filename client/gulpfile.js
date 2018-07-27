@@ -32,6 +32,13 @@ gulp.task("rollup", ["ts"], function() {
                 input: "./temp/main.js",
                 output: {
                     format: "iife"
+                },
+                onwarn: function(warning) {
+                    // Suppress this error message... there are hundreds of them.
+                    // https://github.com/rollup/rollup/issues/794
+                    if (warning.code === "THIS_IS_UNDEFINED") return;
+
+                    console.error(warning.message);
                 }
             })
         )
