@@ -3,6 +3,9 @@ import { Main } from "./scenes/main";
 
 import { debounce } from "./utils";
 
+declare var APP: App;
+declare var SCENE: Scene;
+
 class App {
     private scene: Scene;
     private canvas: HTMLCanvasElement;
@@ -43,6 +46,7 @@ class App {
 
     public setup(): void {
         this.scene = new Main(this.ctx);
+        SCENE = this.scene;
 
         window.onresize = debounce(this.scene.resize.bind(this), 100);
 
@@ -58,7 +62,8 @@ class App {
 }
 
 window.onload = function() {
-    let app = new App();
+    const app = new App();
+    APP = app;
 
     app.setup();
 };
