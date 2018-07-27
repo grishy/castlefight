@@ -1,5 +1,5 @@
 import { Scene } from "./types/scene";
-import { Main } from "./scene/main";
+import { Main } from "./scenes/main";
 
 import { debounce } from "./utils";
 
@@ -24,6 +24,7 @@ class App {
     }
 
     private gameLoop(delta: number): void {
+        this.scene.step(delta);
         this.scene.draw(delta);
 
         requestAnimationFrame(this.gameLoop.bind(this));
