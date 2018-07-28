@@ -16,3 +16,7 @@ func New(c *conn.Conn) *Player {
 		wsConn: c,
 	}
 }
+
+func (p *Player) Send(msg string) {
+	p.wsConn.Write(msg)
+}

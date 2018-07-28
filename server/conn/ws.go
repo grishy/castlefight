@@ -33,7 +33,11 @@ func New(ws *websocket.Conn) *Conn {
 	return conn
 }
 
-func (c *Conn) Write(messageType int, data []byte) error {
+func (c *Conn) Write(msg string) error {
+	return c.write(websocket.TextMessage, []byte(msg))
+}
+
+func (c *Conn) write(messageType int, data []byte) error {
 	c.mx.Lock()
 	err := c.ws.WriteMessage(messageType, data)
 	c.mx.Unlock()
@@ -52,8 +56,9 @@ func (c *Conn) WriteJSON(v interface{}) error {
 func (c *Conn) pinger() {
 	for {
 		<-c.ticker.C
-		if err := c.Write(websocket.PingMessage, []byte{}); err != nil {
+		if err := c.write(websocket.PingMessage, []byte{}); err != nil {
 			log.Printf("[ERROR] send ping: %v", err)
+			break
 		}
 	}
 }
