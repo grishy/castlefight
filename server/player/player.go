@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/Grishy/castlefight/server/player/wsConn"
 	"github.com/gorilla/websocket"
 )
 
@@ -25,11 +26,9 @@ func New() *Player {
 func (p *Player) Clear() {
 }
 
-// Handle сalled to any connection
 func Handle(w http.ResponseWriter, r *http.Request) {
-	// Switching to websocket
-	// Upgrade upgrades the HTTP server connection to the WebSocket protocol.
 	ws, err := upgrader.Upgrade(w, r, nil)
+
 	if err != nil {
 		log.Println("[ERROR] websocket upgrade:", err)
 		return
@@ -37,5 +36,9 @@ func Handle(w http.ResponseWriter, r *http.Request) {
 
 	log.Printf("[DEBUG] new websocket connection: %s", ws.RemoteAddr().String())
 
-	ws.WriteMessage(websocket.TextMessage, []byte("test"))
+	conn := wsConn.New(ws)
+
+	conn.Write(websocket.TextMessage, []byte("test"))
+
+	conn.ReadPump()
 }
