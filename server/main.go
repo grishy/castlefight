@@ -11,7 +11,7 @@ func main() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	log.Println("[DEBUG] Start")
 
-	gameApp := game.New()
+	gameApp := game.New(2)
 
 	// Connect to WebSockets on any request
 	http.HandleFunc("/", gameApp.Handle)

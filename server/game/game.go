@@ -1,11 +1,14 @@
 package game
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
-	"github.com/Grishy/castlefight/server/conn"
 	"github.com/gorilla/websocket"
+
+	"github.com/Grishy/castlefight/server/conn"
+	"github.com/Grishy/castlefight/server/game/player"
 )
 
 var upgrader = websocket.Upgrader{
@@ -16,14 +19,14 @@ var upgrader = websocket.Upgrader{
 }
 
 type Game struct {
+	numberOfPlayers uint
 }
 
-func New() *Game {
+func New(numOfPlayers uint) *Game {
 	log.Printf("[DEBUG] Cteate game")
-	return &Game{}
-}
-
-func (g *Game) Clear() {
+	return &Game{
+		numberOfPlayers: numOfPlayers,
+	}
 }
 
 func (g *Game) Handle(w http.ResponseWriter, r *http.Request) {
@@ -36,9 +39,10 @@ func (g *Game) Handle(w http.ResponseWriter, r *http.Request) {
 
 	log.Printf("[DEBUG] new websocket connection: %s", ws.RemoteAddr().String())
 
-	c := conn.New(ws)
+	wsConn := conn.New(ws)
 
-	c.Write(websocket.TextMessage, []byte("test"))
+	wsConn.Write(websocket.TextMessage, []byte("start"))
 
-	c.ReadPump()
+	pl := player.New(wsConn)
+	fmt.Println(pl)
 }

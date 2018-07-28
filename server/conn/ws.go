@@ -13,7 +13,7 @@ const (
 	pongWait   = 10 * time.Second
 )
 
-type conn struct {
+type Conn struct {
 	// The websocket connection
 	ws *websocket.Conn
 	// Ping timer
@@ -22,8 +22,8 @@ type conn struct {
 	mx sync.Mutex
 }
 
-func New(ws *websocket.Conn) *conn {
-	conn := &conn{
+func New(ws *websocket.Conn) *Conn {
+	conn := &Conn{
 		ws:     ws,
 		ticker: time.NewTicker(pingPeriod),
 	}
@@ -33,7 +33,7 @@ func New(ws *websocket.Conn) *conn {
 	return conn
 }
 
-func (c *conn) Write(messageType int, data []byte) error {
+func (c *Conn) Write(messageType int, data []byte) error {
 	c.mx.Lock()
 	err := c.ws.WriteMessage(messageType, data)
 	c.mx.Unlock()
@@ -41,7 +41,7 @@ func (c *conn) Write(messageType int, data []byte) error {
 	return err
 }
 
-func (c *conn) WriteJSON(v interface{}) error {
+func (c *Conn) WriteJSON(v interface{}) error {
 	c.mx.Lock()
 	err := c.ws.WriteJSON(v)
 	c.mx.Unlock()
@@ -49,7 +49,7 @@ func (c *conn) WriteJSON(v interface{}) error {
 	return err
 }
 
-func (c *conn) pinger() {
+func (c *Conn) pinger() {
 	for {
 		<-c.ticker.C
 		if err := c.Write(websocket.PingMessage, []byte{}); err != nil {
@@ -58,15 +58,13 @@ func (c *conn) pinger() {
 	}
 }
 
-func (c *conn) ReadPump() {
+func (c *Conn) ReadPump() {
 	defer func() {
 		c.ws.Close()
 		c.ticker.Stop()
 	}()
 
-	// Time limit for accepting the request
 	c.ws.SetReadDeadline(time.Now().Add(pongWait))
-	// If pong came then prolong the life of the connection (same)
 	c.ws.SetPongHandler(func(string) error { c.ws.SetReadDeadline(time.Now().Add(pongWait)); return nil })
 
 	for {

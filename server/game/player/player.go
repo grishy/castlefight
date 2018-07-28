@@ -2,15 +2,17 @@ package player
 
 import (
 	"log"
+
+	"github.com/Grishy/castlefight/server/conn"
 )
 
 type Player struct {
+	wsConn *conn.Conn
 }
 
-func New() *Player {
+func New(c *conn.Conn) *Player {
 	log.Printf("[DEBUG] new player")
-	return &Player{}
-}
-
-func (p *Player) Clear() {
+	return &Player{
+		wsConn: c,
+	}
 }
