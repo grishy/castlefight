@@ -4,14 +4,16 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/Grishy/castlefight/server/player"
+	"github.com/Grishy/castlefight/server/game"
 )
 
 func main() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	log.Println("[DEBUG] Start")
 
+	gameApp := game.New()
+
 	// Connect to WebSockets on any request
-	http.HandleFunc("/", player.Handle)
+	http.HandleFunc("/", gameApp.Handle)
 	panic(http.ListenAndServe(":9999", nil))
 }

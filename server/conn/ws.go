@@ -1,4 +1,4 @@
-package wsConn
+package conn
 
 import (
 	"log"
@@ -9,13 +9,11 @@ import (
 )
 
 const (
-	// Time allowed to read the next pong message from the peer.
-	pongWait = 15 * time.Second
-	// Send pings to peer with this period. Must be less than pongWait.
-	pingPeriod = 10 * time.Second
+	pingPeriod = 5 * time.Second
+	pongWait   = 10 * time.Second
 )
 
-type wsConn struct {
+type conn struct {
 	// The websocket connection
 	ws *websocket.Conn
 	// Ping timer
@@ -24,9 +22,8 @@ type wsConn struct {
 	mx sync.Mutex
 }
 
-// New create new websoket conn
-func New(ws *websocket.Conn) *wsConn {
-	conn := &wsConn{
+func New(ws *websocket.Conn) *conn {
+	conn := &conn{
 		ws:     ws,
 		ticker: time.NewTicker(pingPeriod),
 	}
@@ -36,7 +33,7 @@ func New(ws *websocket.Conn) *wsConn {
 	return conn
 }
 
-func (c *wsConn) Write(messageType int, data []byte) error {
+func (c *conn) Write(messageType int, data []byte) error {
 	c.mx.Lock()
 	err := c.ws.WriteMessage(messageType, data)
 	c.mx.Unlock()
@@ -44,7 +41,7 @@ func (c *wsConn) Write(messageType int, data []byte) error {
 	return err
 }
 
-func (c *wsConn) WriteJSON(v interface{}) error {
+func (c *conn) WriteJSON(v interface{}) error {
 	c.mx.Lock()
 	err := c.ws.WriteJSON(v)
 	c.mx.Unlock()
@@ -52,8 +49,7 @@ func (c *wsConn) WriteJSON(v interface{}) error {
 	return err
 }
 
-// Send ping every pingPeriod time
-func (c *wsConn) pinger() {
+func (c *conn) pinger() {
 	for {
 		<-c.ticker.C
 		if err := c.Write(websocket.PingMessage, []byte{}); err != nil {
@@ -62,8 +58,7 @@ func (c *wsConn) pinger() {
 	}
 }
 
-// readPump pumps messages from the websocket connection
-func (c *wsConn) ReadPump() {
+func (c *conn) ReadPump() {
 	defer func() {
 		c.ws.Close()
 		c.ticker.Stop()
