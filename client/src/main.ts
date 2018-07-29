@@ -1,6 +1,5 @@
-import { Scene } from "./types/scene";
 import { Main } from "./scenes/main";
-
+import { Scene } from "./types/scene";
 import { debounce } from "./utils";
 
 class App {
@@ -19,7 +18,7 @@ class App {
         this.socket = new WebSocket("ws://localhost:9999");
 
         this.socket.onopen = function() {
-            console.log("Соединение установлено.");
+            console.log("Соединение установлено");
         };
 
         this.socket.onclose = function(event) {
