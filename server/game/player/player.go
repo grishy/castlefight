@@ -20,3 +20,7 @@ func New(c *conn.Conn) *Player {
 func (p *Player) Send(msg string) {
 	p.wsConn.Write(msg)
 }
+
+func (p *Player) SendJson(v interface{}) {
+	p.wsConn.WriteJSON(v)
+}
