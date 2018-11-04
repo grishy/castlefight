@@ -1,8 +1,0 @@
-{
-    "compilerOptions": {
-        "module": "es2015",
-        "outDir": "./temp",
-        "noImplicitAny": true
-    },
-    "include": ["./src/"]
-}

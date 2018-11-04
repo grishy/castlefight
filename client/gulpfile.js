@@ -1,8 +1,7 @@
 const gulp = require("gulp");
 const connect = require("gulp-connect");
-const rollup = require("gulp-rollup");
-const ts = require("gulp-typescript");
-const tsProject = ts.createProject("tsconfig.json");
+const sourcemaps = require("gulp-sourcemaps");
+const rollup = require("gulp-better-rollup");
 
 gulp.task("public", () => {
     gulp.src("public/**/*")
@@ -18,31 +17,19 @@ gulp.task("connect", () => {
     });
 });
 
-gulp.task("ts", () => {
-    return tsProject
-        .src()
-        .pipe(tsProject())
-        .js.pipe(gulp.dest("temp"));
-});
-
-gulp.task("rollup", ["ts"], function() {
-    gulp.src("./temp/**/*.js")
+gulp.task("rollup", function() {
+    gulp.src("src/main.js")
+        .pipe(sourcemaps.init())
         .pipe(
-            rollup({
-                input: "./temp/main.js",
-                output: {
+            rollup(
+                {},
+                {
                     format: "iife"
-                },
-                onwarn: function(warning) {
-                    // Suppress this error message... there are hundreds of them.
-                    // https://github.com/rollup/rollup/issues/794
-                    if (warning.code === "THIS_IS_UNDEFINED") return;
-
-                    console.error(warning.message);
                 }
-            })
+            )
         )
-        .pipe(gulp.dest("./dist"))
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest("dist"))
         .pipe(connect.reload());
 });
 
@@ -51,4 +38,5 @@ gulp.task("watch", () => {
     gulp.watch("public/**/*.*", ["public"]);
 });
 
-gulp.task("default", ["public", "watch", "rollup", "connect"]);
+gulp.task("build", ["public", "watch", "rollup"]);
+gulp.task("default", ["build", "connect"]);
