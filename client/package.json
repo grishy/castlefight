@@ -12,7 +12,6 @@
     "gulp": "^4.0.0",
     "gulp-better-rollup": "^3.4.0",
     "gulp-connect": "^5.7.0",
-    "gulp-sourcemaps": "^2.6.4",
-    "three": "^0.100.0"
+    "gulp-sourcemaps": "^2.6.4"
   }
 }
