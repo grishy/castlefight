@@ -10,9 +10,15 @@ function public() {
     .pipe(connect.reload());
 }
 
+function vendor() {
+  return src("vendor/**/*")
+    .pipe(dest("dist/vendor"))
+    .pipe(connect.reload());
+}
+
 function js() {
   return src("src/main.js")
-    // .pipe(sourcemaps.init())
+    .pipe(sourcemaps.init())
     .pipe(
       rollup(
         {},
@@ -21,9 +27,8 @@ function js() {
         }
       )
     )
-    // .pipe(sourcemaps.write())
+    .pipe(sourcemaps.write())
     .pipe(dest("dist"))
-    .pipe(connect.reload());
 }
 
 function localServer() {
@@ -37,7 +42,8 @@ function localServer() {
 function livereload() {
   watch("src/**/*.*", parallel(js));
   watch("public/**/*.*", parallel(public));
+  watch("vendor/**/*.*", parallel(vendor));
 }
 
-exports.build = parallel(public, livereload, js);
+exports.build = parallel(public, livereload, js, vendor);
 exports.default = parallel(exports.build, localServer);
