@@ -2,11 +2,18 @@
 
 Online RTS game.
 
+### Client:
 
-Client:
-- WebGL
-- TypeScript
-- WebSocket
+- Three.js
+- Gulp.js
+- Rollip.js
 
-Server:
-- Go
+```bash
+$ npm i
+$ npm install gulp-cli -g
+$ gulp
+```
+
+### Server:
+
+- Node.js
