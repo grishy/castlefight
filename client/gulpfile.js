@@ -1,42 +1,43 @@
-const gulp = require("gulp");
+const { src, dest, parallel, watch } = require("gulp");
+
 const connect = require("gulp-connect");
 const sourcemaps = require("gulp-sourcemaps");
 const rollup = require("gulp-better-rollup");
 
-gulp.task("public", () => {
-    gulp.src("public/**/*")
-        .pipe(gulp.dest("dist"))
-        .pipe(connect.reload());
-});
+function public() {
+  return src("public/**/*")
+    .pipe(dest("dist"))
+    .pipe(connect.reload());
+}
 
-gulp.task("connect", () => {
-    connect.server({
-        root: "dist",
-        port: 8888,
-        livereload: true
-    });
-});
+function js() {
+  return src("src/main.js")
+    // .pipe(sourcemaps.init())
+    .pipe(
+      rollup(
+        {},
+        {
+          format: "umd"
+        }
+      )
+    )
+    // .pipe(sourcemaps.write())
+    .pipe(dest("dist"))
+    .pipe(connect.reload());
+}
 
-gulp.task("rollup", function() {
-    gulp.src("src/main.js")
-        .pipe(sourcemaps.init())
-        .pipe(
-            rollup(
-                {},
-                {
-                    format: "iife"
-                }
-            )
-        )
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest("dist"))
-        .pipe(connect.reload());
-});
+function localServer() {
+  return connect.server({
+    root: "dist",
+    port: 8888,
+    livereload: true
+  });
+}
 
-gulp.task("watch", () => {
-    gulp.watch("src/**/*.*", ["rollup"]);
-    gulp.watch("public/**/*.*", ["public"]);
-});
+function livereload() {
+  watch("src/**/*.*", parallel(js));
+  watch("public/**/*.*", parallel(public));
+}
 
-gulp.task("build", ["public", "watch", "rollup"]);
-gulp.task("default", ["build", "connect"]);
+exports.build = parallel(public, livereload, js);
+exports.default = parallel(exports.build, localServer);
