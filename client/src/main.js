@@ -1,24 +1,55 @@
-var scene = new THREE.Scene();
-			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
-
-			var renderer = new THREE.WebGLRenderer();
-			renderer.setSize( window.innerWidth, window.innerHeight );
-			document.body.appendChild( renderer.domElement );
-
-			var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-			var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-			var cube = new THREE.Mesh( geometry, material );
-			scene.add( cube );
-
-			camera.position.z = 5;
-
-			var animate = function () {
-				requestAnimationFrame( animate );
-
-				cube.rotation.x += 0.01;
-				cube.rotation.y += 0.01;
-
-				renderer.render( scene, camera );
-			};
-
+var container, stats, controls;
+			var camera, scene, renderer, light;
+			init();
 			animate();
+			function init() {
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.25, 1000 );
+				camera.position.set( - 1.8, 0.9, 2.7 );
+				controls = new THREE.OrbitControls( camera );
+				controls.target.set( 0, - 0.2, - 0.2 );
+				controls.update();
+				var urls = [ 'posx.jpg', 'negx.jpg', 'posy.jpg', 'negy.jpg', 'posz.jpg', 'negz.jpg' ];
+				var loader = new THREE.CubeTextureLoader().setPath( 'textures/' );
+				var background = loader.load( urls );
+				scene = new THREE.Scene();
+				scene.background = background;
+				light = new THREE.HemisphereLight( 0xbbbbff, 0x444422 );
+				light.position.set( 0, 1, 0 );
+				scene.add( light );
+				// model
+				var loader = new THREE.GLTFLoader().setPath( 'models/Skull/' );
+				loader.load( 'scene.gltf', function ( gltf ) {
+					gltf.scene.traverse( function ( child ) {
+						if ( child.isMesh ) {
+							child.material.envMap = background;
+						}
+          } );
+          gltf.scene.position.y=-25;
+					scene.add( gltf.scene );
+				}, undefined, function ( e ) {
+					console.error( e );
+				} );
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.gammaOutput = true;
+				container.appendChild( renderer.domElement );
+				window.addEventListener( 'resize', onWindowResize, false );
+				// stats
+				stats = new Stats();
+				container.appendChild( stats.dom );
+			}
+			function onWindowResize() {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+			}
+			//
+			function animate() {
+				requestAnimationFrame( animate );
+				renderer.render( scene, camera );
+        stats.update();
+        camera.position.z+=0.1
+			}
