@@ -2,11 +2,13 @@
 
 Online RTS game.
 
+![](https://i.redd.it/bbace2h90zv11.jpg)
+
 ### Client:
 
 - Three.js
 - Gulp.js
-- Rollip.js
+- Rollup.js
 
 ```bash
 $ npm i
