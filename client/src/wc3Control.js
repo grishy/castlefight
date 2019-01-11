@@ -28,8 +28,8 @@ class Wc3Control {
     rotateAroundWorldAxis(this.camera, new THREE.Vector3(0, 1, 0), -90 * THREE.Math.DEG2RAD);
     rotateAroundWorldAxis(this.camera, new THREE.Vector3(0, 0, 1), 0);
 
-    this.mouseX = undefined;
-    this.mouseY = undefined;
+    this.mouseX = null;
+    this.mouseY = null;
 
     window.addEventListener('keydown', this.onKeyDown.bind(this), false);
     window.addEventListener('mousemove', this.onMouseMove.bind(this), false);

@@ -65,7 +65,7 @@ function animate() {
   renderer.render(scene, camera);
   stats.update();
   
-  controls.update(); // only required if controls.enableDamping = true, or if controls.autoRotate = true
+  controls.update(); 
 }
 
 
