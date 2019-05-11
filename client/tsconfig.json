@@ -1,8 +1,12 @@
 {
     "compilerOptions": {
+        "target": "es6",
         "module": "es2015",
-        "outDir": "./temp",
+        // "strict": true,
         "noImplicitAny": true
     },
-    "include": ["./src/"]
+    "include": ["./src/"],
+    "types": [
+        "babylonjs",
+    ],
 }
