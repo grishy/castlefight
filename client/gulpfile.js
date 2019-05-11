@@ -1,52 +1,19 @@
-const {
-  src, dest, parallel, watch,
-} = require('gulp');
+const { series, parallel } = require('gulp');
 
-const connect = require('gulp-connect');
-const sourcemaps = require('gulp-sourcemaps');
-const rollup = require('gulp-better-rollup');
-
-function publicFile() {
-  return src('public/**/*')
-    .pipe(dest('dist'))
-    .pipe(connect.reload());
+function clean(cb) {
+  // body omitted
+  cb();
 }
 
-function vendor() {
-  return src('vendor/**/*')
-    .pipe(dest('dist/vendor'))
-    .pipe(connect.reload());
+function css(cb) {
+  // body omitted
+  cb();
 }
 
-function js() {
-  return src('src/main.js')
-    .pipe(sourcemaps.init())
-    .pipe(
-      rollup(
-        {},
-        {
-          format: 'umd',
-        },
-      ),
-    )
-    .pipe(sourcemaps.write())
-    .pipe(dest('dist'))
-    .pipe(connect.reload());
+function javascript(cb) {
+  // body omitted
+  cb();
 }
 
-function localServer() {
-  return connect.server({
-    root: 'dist',
-    port: 8888,
-    livereload: true,
-  });
-}
-
-function livereload() {
-  watch('src/**/*.*', parallel(js));
-  watch('public/**/*.*', parallel(publicFile));
-  watch('vendor/**/*.*', parallel(vendor));
-}
-
-exports.build = parallel(publicFile, js, vendor);
-exports.default = parallel(exports.build, livereload, localServer);
+exports.build = series(clean, parallel(css, javascript));
+exports.default = series(clean, parallel(css, javascript));
