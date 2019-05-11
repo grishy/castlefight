@@ -17,7 +17,7 @@ window.addEventListener('DOMContentLoaded', () => {
     camera.attachControl(canvas, false);
 
     // The first parameter can be used to specify which mesh to import. Here we import all meshes
-    BABYLON.SceneLoader.Append("https://models.babylonjs.com/", "Alien.glb", scene, function (newMeshes) {
+    BABYLON.SceneLoader.Append("/models/", "Alien.glb", scene, function (newMeshes) {
       scene.activeCamera = null;
       scene.createDefaultCameraOrLight(true);
       scene.activeCamera.attachControl(canvas, false);

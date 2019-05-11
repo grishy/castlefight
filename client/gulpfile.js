@@ -28,9 +28,16 @@ function publicFile() {
         .pipe(connect.reload());
 }
 
+function modelsFile() {
+    return src('models/**/**.*')
+        .pipe(dest('dist/models'))
+        .pipe(connect.reload());
+}
+
 function livereload() {
     watch('src/**/*.*', series(js));
     watch('public/**/*.*', series(publicFile));
+    watch('models/**/*.*', series(modelsFile));
 
     connect.server({
         root: 'dist',
@@ -39,5 +46,5 @@ function livereload() {
     });
 }
 
-exports.build = series(js, publicFile);
-exports.default = series(js, publicFile, livereload);
+exports.build = series(js, publicFile,modelsFile);
+exports.default = series(js, publicFile,modelsFile, livereload);
