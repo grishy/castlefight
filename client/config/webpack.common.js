@@ -58,11 +58,11 @@ module.exports = {
 	resolve: {
 		extensions: ['.ts', '.js'],
 		alias: {
-			'pepjs': path.resolve(__dirname, '../node_modules/pepjs/dist/pep.min.js')
+			'pepjs': path.resolve(__dirname, '../node_modules/pepjs/dist/pep.js')
 		}
 	},
 	plugins: [
-		new CleanWebpackPlugin(['dist'], {
+		new CleanWebpackPlugin({
 			root: path.resolve(__dirname, '../')
 		}),
 		new HtmlWebpackPlugin({
