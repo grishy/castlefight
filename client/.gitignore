@@ -1,6 +1,3 @@
-dist
 node_modules
-.vscode
-.idea
-*.iml
-.gitignore
+dist/main.js
+dist/css/style.css

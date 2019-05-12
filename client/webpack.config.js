@@ -1,63 +1,81 @@
 const path = require('path');
-// Optimizes duplicates in splitted bundles 
-const webpack = require('webpack');
-// creates index.html file by a template index.ejs
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-// cleans dist folder
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-// copies the assets folder into dist folder
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-// output folder location
-const distFolder = "./dist";
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const dev = process.env.NODE_ENV === 'dev';
 
-module.exports = {
-  mode: 'development',
-  entry: './src/index.ts',
-  plugins: [
-    new CleanWebpackPlugin(),
-    new HtmlWebpackPlugin({
-      template: 'src/index.ejs'
-    }),
-    new CopyWebpackPlugin([
-      { from: 'src/assets', to: 'assets' },
-    ])
-  ],
-  devtool: 'inline-source-map',
-  devServer: {
-    contentBase: distFolder
-  },
-  module: {
-    rules: [
-      {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/
-      },
-      {
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader'
-        ]
-      }
-    ]
-  },
-  optimization: {
-    splitChunks: {
-      cacheGroups: {
-        commons: {
-          test: /[\\/]node_modules[\\/]/,
-          name: "vendors",
-          chunks: "all"
-        }
-      }
+let cssLoaders = [{
+    loader: 'css-loader',
+    options: {
+        importLoaders: 1
     }
-  },
-  resolve: {
-    extensions: [".tsx", ".ts", ".js"]
-  },
-  output: {
-    filename: '[name].bundle.js',
-    path: path.resolve(__dirname, distFolder)
-  }
+}];
+
+if (!dev) {
+    cssLoaders.push({
+        loader: 'postcss-loader',
+        options: {
+            plugins: (loader) => [
+                require('autoprefixer')()
+            ]
+        }
+    });
+}
+
+let config = {
+    entry: './assets/ts/app.tsx',
+    output: {
+        filename: 'main.js',
+        path: path.resolve(__dirname, 'dist')
+    },
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js']
+    },
+    plugins: [
+        new ExtractTextPlugin({
+            filename: 'css/style.css',
+            disable: false // désactiver le plugin
+        })
+    ],
+    module: {
+        rules: [{
+                test: /\.tsx?$/,
+                exclude: /(node_modules|bower_components)/,
+                use: ['babel-loader', {
+                    loader: 'ts-loader',
+                    options: {
+                        compilerOptions: {
+                            sourceMap: dev,
+                        }
+                    }
+                }],
+
+            },
+            {
+                test: /\.js$/,
+                exclude: /(node_modules|bower_components)/,
+                use: ['babel-loader']
+            },
+            {
+                test: /\.scss$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: [...cssLoaders, 'sass-loader']
+                })
+            }
+        ]
+    }
 };
+
+if (!dev) {
+    // prod
+    config.mode = "production";
+    config.plugins.push(new UglifyJSPlugin());
+} else {
+    // dev
+    config.mode = "development";
+    config.watch = true;
+    config.devtool = 'cheap-module-eval-source-map';
+    //config.devtool = 'inline-source-map';
+}
+
+module.exports = config;

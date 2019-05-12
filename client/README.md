@@ -1,11 +1,12 @@
-A starter template for those who want to use the famous javascript 3D game engine babylonjs with typescript and webpack.
+# babylonjs4_webpack4_typescript
+Exemple starting project using webpack4, babylonjs4 and typescript
 
-## How to Start? ##
+## Requirements
 
-1. Download and Install Node.js
-2. Open Commandline and Enter
-```
-npm install 
-npm start
-```
-3. Open Browser and Enter [http://localhost:8080](http://localhost:8080)
+* NodeJS
+* Npm
+
+## Installation
+1. npm i -g webpack-cli
+2. npm i -g typescript
+3. npm i
