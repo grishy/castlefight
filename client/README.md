@@ -1,9 +1,11 @@
-### Use
+A starter template for those who want to use the famous javascript 3D game engine babylonjs with typescript and webpack.
 
-node.js v8.x+
+## How to Start? ##
 
+1. Download and Install Node.js
+2. Open Commandline and Enter
 ```
-> sudo npm install -g gulp-cli
-> npm i     # alias to npm install
-> gulp      # start dev env
+npm install 
+npm start
 ```
+3. Open Browser and Enter [http://localhost:8080](http://localhost:8080)
