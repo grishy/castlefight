@@ -1,8 +1,8 @@
-# babylonjs-webpack
+# Client
 
-## Demo
+## Webpack
 
-[https://codefine.github.io/demo/babylonjs/](https://codefine.github.io/demo/babylonjs/)
+https://github.com/codefine/babylonjs-webpack
 
 ## Intro
 
@@ -14,12 +14,6 @@ Start a BABYLON.js project with:
 
 ## Start
 
-``` bash
-npm i yarn -g
-yarn install
-```
-
-or
 
 ``` bash
 npm i

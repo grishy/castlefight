@@ -1,7 +1,7 @@
 {
-  "name": "babylonjs-webpack",
+  "name": "castlefight",
   "version": "1.0.0",
-  "description": "babylonjs-webpack",
+  "description": "game",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/codefine/babylonjs-webpack.git"
+    "url": "git+https://github.com/Grishy/castlefight.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/codefine/babylonjs-webpack/issues"
+    "url": "https://github.com/Grishy/castlefight/issues"
   },
-  "homepage": "https://github.com/codefine/babylonjs-webpack#readme",
+  "homepage": "https://github.com/Grishy/castlefight#readme",
   "dependencies": {
     "babylonjs": "^4.0.3",
     "babylonjs-gui": "^4.0.3",
