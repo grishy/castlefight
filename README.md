@@ -6,7 +6,7 @@ Online RTS game.
 
 ### Client:
 
-- Three.js
+- BABYLON.JS
 - Gulp.js
 - Rollup.js
 
@@ -18,4 +18,4 @@ $ gulp
 
 ### Server:
 
-- Node.js
+- Golang
