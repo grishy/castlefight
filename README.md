@@ -6,16 +6,12 @@ Online RTS game.
 
 ### Client:
 
-- BABYLON.JS
-- Gulp.js
-- Rollup.js
-
-```bash
-$ npm i
-$ npm install gulp-cli -g
-$ gulp
-```
+- Babylon.js 4.0 
+- Webpack
+- WebSocket
 
 ### Server:
 
 - Golang
+- WebSocket
+
