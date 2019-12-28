@@ -6,12 +6,8 @@ Online RTS game.
 
 ### Client:
 
-- Babylon.js 4.0 
-- Webpack
-- WebSocket
+- Rust
 
 ### Server:
 
-- Golang
-- WebSocket
-
+- Rust
